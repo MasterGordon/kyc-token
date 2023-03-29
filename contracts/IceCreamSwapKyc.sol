@@ -19,8 +19,9 @@ contract IceCreamSwapKYC is
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant REVOKE_ROLE = keccak256("REVOKE_ROLE");
-    CountersUpgradeable.Counter private _tokenIdCounter;
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
+
+    CountersUpgradeable.Counter private _tokenIdCounter;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -45,29 +46,9 @@ contract IceCreamSwapKYC is
         _safeMint(to, tokenId);
     }
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256,
-        uint256
-    ) pure internal override {
-        require(
-            from == address(0) || to == address(0),
-            "This a Soulbound token. It cannot be transferred. It can only be burned by the token owner."
-        );
-    }
-
     function revoke(uint256 tokenId) public onlyRole(REVOKE_ROLE) {
         _burn(tokenId);
     }
-
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlyRole(UPGRADER_ROLE)
-    {}
-
-    // The following functions are overrides required by Solidity.
 
     function supportsInterface(bytes4 interfaceId)
         public
@@ -80,5 +61,23 @@ contract IceCreamSwapKYC is
 
     function contractURI() public pure returns (string memory) {
         return "https://icecreamswap.com/kyc-meta";
+    }
+
+    function _authorizeUpgrade(address newImplementation)
+        internal
+        override
+        onlyRole(UPGRADER_ROLE)
+    {}
+
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256,
+        uint256
+    ) internal pure override {
+        require(
+            from == address(0) || to == address(0),
+            "This a Soulbound token. It cannot be transferred. It can only be burned by the token owner."
+        );
     }
 }

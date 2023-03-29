@@ -1,0 +1,12 @@
+{
+  "id": 1116,
+  "network": "Custom",
+  "deployments": {
+    "0xC6549736F3f8af556a9f912345EF75e74F5662b1": {
+      "date": "2023-03-29T19:56:34.936Z",
+      "contractName": "IceCreamSwapKYC",
+      "fork": "london",
+      "implementationAddress": "0x6b274E12d85616d0c01eF78f8102b9C8d2c765c0"
+    }
+  }
+}
